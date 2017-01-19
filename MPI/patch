@@ -1,0 +1,47 @@
+diff --git a/rules.py b/rules.py
+index 3773e15..5e5d6f8 100644
+--- a/rules.py
++++ b/rules.py
+@@ -3,7 +3,7 @@ Example rules are defined herein. Rules are generally meant to be defined by
+ the user.
+ '''
+ 
+-from itertools import imap, repeat, izip
++from itertools import repeat
+ from utils import i2bt, bt2i
+ 
+ # Generate Wolfram's rules for neighborhood 1 automata
+@@ -24,6 +24,6 @@ def wolfram(rulenum):
+     width = 3
+     image = i2bt(rulenum, 2**width)[::-1]
+     # for 0 to 8, run i2bt(0, width) to i2bt(8, width)
+-    preimage = imap(i2bt, range(0,2**width), repeat(width))
++    preimage = map(i2bt, range(0,2**width), repeat(width))
+     # line up the preimages with the images and make it a dict/hashmap
+-    return dict(izip(preimage, image))
++    return dict(zip(preimage, image))
+diff --git a/update.py b/update.py
+index 60144fc..c43d0a7 100644
+--- a/update.py
++++ b/update.py
+@@ -9,9 +9,9 @@ import numpy
+ from matplotlib import pyplot
+ from matplotlib import cm
+ 
+-from itertools import imap
++# from itertools import imap
+ from itertools import repeat 
+-from itertools import izip
++# from itertools import izip
+ 
+ from utils import bt2i
+ 
+@@ -43,7 +43,7 @@ def prepare_update(state, neighborhood, rule):
+     #return q
+ 
+     # comments above left for readability, all of it strung together for speed:
+-    return imap(rule.__getitem__, imap(tuple, imap(state.__getitem__, imap(neighborhood, range(0,l)))))
++    return map(rule.__getitem__, map(tuple, map(state.__getitem__, map(neighborhood, range(0,l)))))
+ 
+ def update(*args, **kwargs):
+     '''
